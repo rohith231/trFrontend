@@ -10,11 +10,11 @@ gulp.task("licenses", async function() {
       /**
 
       =========================================================
-      * TechPro Application - v1.0.0
+      * Product platform - v1.0.0
       =========================================================
       
-      * Copyright 2021 Technowell (https://www.technowell.org.in)
-      * Coded by Technowell
+      * Copyright 2021 TRC (https://www.trccompanies,com)
+      * Coded by TRC
       
       =========================================================
       
@@ -32,11 +32,11 @@ gulp.task("licenses", async function() {
       gap.prependText(`<!--
 
       =========================================================
-      * TechPro Application - v1.0.0
+      * Product platform - v1.0.0
       =========================================================
       
-      * Copyright 2021 Technowell (https://www.technowell.org.in)
-      * Coded by Technowell
+      * Copyright 2021 TRC (https://www.trccompanies.com)
+      * Coded by TRC
       
       =========================================================
       
@@ -54,11 +54,11 @@ gulp.task("licenses", async function() {
       /*
       
       =========================================================
-      * TechPro Application - v1.0.0
+      * Product platform - v1.0.0
       =========================================================
       
-      * Copyright 2021 Technowell (https://www.technowell.org.in)
-      * Coded by Technowell
+      * Copyright 2021 TRC (https://www.trccompanies)
+      * Coded by TRC
       
       =========================================================
       
