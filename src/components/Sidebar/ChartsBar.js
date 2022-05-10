@@ -1,14 +1,14 @@
 import {
+  faBullseye,
   faChartBar,
   faChartLine,
   faChartPie,
   faChevronRight,
-  faProjectDiagram,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { chartContext } from "GlobalState";
 import { getChartsByRole } from "network/ApiAxios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import Card from "reactstrap/lib/Card";
 import Col from "reactstrap/lib/Col";
@@ -82,7 +82,7 @@ const ChartsBar = () => {
           style={{ fontSize: "28px", paddingLeft: "30px" }}
           className="text-muted"
         >
-          <FontAwesomeIcon icon={faProjectDiagram} />
+          <FontAwesomeIcon icon={faBullseye} />
         </Col>
         <Col
           sm="9"
@@ -90,7 +90,7 @@ const ChartsBar = () => {
           className="h3 text-muted pl-4"
           style={{ textAlign: "start" }}
         >
-          Charts
+          Reports
         </Col>
       </Row>
       <ListGroup className="mt-3">

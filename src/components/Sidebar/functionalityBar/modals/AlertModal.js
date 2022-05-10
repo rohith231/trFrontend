@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "reactstrap/lib/Button";
 import Modal from "reactstrap/lib/Modal";
 import ModalBody from "reactstrap/lib/ModalBody";
@@ -6,10 +6,6 @@ import ModalFooter from "reactstrap/lib/ModalFooter";
 import ModalHeader from "reactstrap/lib/ModalHeader";
 
 const AlertModal = (props) => {
-  const [error, setError] = useState("");
-  const [title, setTitle] = useState("");
-  const [parameters, setParameters] = useState([{ parameter: "" }]);
-
   return (
     <div>
       <Modal
@@ -37,7 +33,6 @@ const AlertModal = (props) => {
           >
             Cancel
           </Button>
-
         </ModalFooter>
       </Modal>
     </div>

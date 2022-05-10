@@ -1,9 +1,4 @@
 import {
-  faAngleDoubleRight,
-  faAngleRight,
-  faCaretRight,
-  faCarrot,
-  faChevronCircleRight,
   faChevronDown,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";

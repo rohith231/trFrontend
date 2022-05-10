@@ -40,7 +40,7 @@ const CommonManagement = (props) => {
     <div>
       <Header />
       <Card>
-        <CardHeader>
+        <CardHeader style={{ border: "0px" }}>
           <Nav tabs>{createLinks(props.routes)}</Nav>
         </CardHeader>
         <CardBody>

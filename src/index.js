@@ -8,7 +8,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/techpro-dashboard-react.scss";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 
 ReactDOM.render(
   <QueryClientProvider client={new QueryClient()}>

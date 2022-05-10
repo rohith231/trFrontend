@@ -14,6 +14,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   transition: all 0.5s ease;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -46,18 +47,23 @@
   list-style: none;
 }
 
-/* .link {
-  display: block;
+.link {
   text-decoration: none;
-  color: #757575;
-  font-weight: 600;
-  font-size: 18px;
-} */
-.link:hover,
-.active .link {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.link:hover {
   text-decoration: none;
-  color: #fff;
-  background: #f8be12;
+  background-color: #bbdefb5e;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.active-link {
+  text-decoration: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-left: 3px solid #2196f3;
+  background-color: #bbdefb8e;
 }
 
 #navbar-wrapper {
@@ -141,6 +147,36 @@
     position: relative;
     margin-right: 60px;
   }
+  /* for floating button */
+  .closeFloat {
+    position: fixed;
+    transition: all 0.5s ease;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    bottom: 30px;
+    left: 50px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .openFloat {
+    position: fixed;
+    transition: all 0.5s ease;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    bottom: 30px;
+    left: 230px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .closeFloatIcon {
+    transition: all 0.5s ease, transform 0.5s;
+    transform: rotate(-180deg);
+  }
+  .openFloatIcon {
+    transition: all 0.5s ease, transform 0.5s;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -179,6 +215,12 @@
   #wrapper.toggled #content-wrapper {
     position: relative;
     margin-right: 250px;
+  }
+  .closeFloat {
+    display: none;
+  }
+  .openFloat {
+    display: none;
   }
 }
 
@@ -237,5 +279,14 @@
   #wrapper.toggled #content-wrapper {
     position: relative;
     margin-right: 250px;
+  }
+  .closeFloat {
+    display: none;
+  }
+  .openFloat {
+    display: none;
+  }
+  #llIcon {
+    display: none;
   }
 }

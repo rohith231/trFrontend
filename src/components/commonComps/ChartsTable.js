@@ -1,11 +1,10 @@
+import { getChartsByRole } from "network/ApiAxios";
 import { getAllCharts } from "network/ApiAxios";
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import Card from "reactstrap/lib/Card";
 import CardHeader from "reactstrap/lib/CardHeader";
 import FormGroup from "reactstrap/lib/FormGroup";
 import Input from "reactstrap/lib/Input";
-import Label from "reactstrap/lib/Label";
 import Table from "reactstrap/lib/Table";
 
 const ChartsTable = (props) => {
@@ -17,16 +16,39 @@ const ChartsTable = (props) => {
       if (res.data) {
         if (res.data.success) {
           setCharts(res.data.charts);
-          const temp = {};
-          res.data.charts.forEach((chart) => {
-            temp[chart.id] = false;
-          });
-          props.setPermittedFunc(temp);
+          // const temp = {};
+          // res.data.charts.forEach((chart) => {
+          //   temp[chart.id] = false;
+          // });
+          // props.setPermittedFunc(temp);
         }
       }
     };
     runAsync();
   }, []);
+  useEffect(() => {
+    const runAsync = async () => {
+      if (props.roleId) {
+        const res = await getChartsByRole(props.roleId);
+        if (res.data) {
+          if (res.data.success) {
+            if (res.data.charts.length > 0) {
+              const temp = {};
+              res.data.charts.forEach((chart) => {
+                temp[chart.id] = true;
+              });
+              props.setExistingCharts(temp);
+              props.setPermittedFunc(temp);
+            }
+          }
+        }
+      }
+    };
+    runAsync();
+    return () => {
+      props.setPermittedFunc({});
+    };
+  }, [props.roleId]);
   const handleCheckboxes = (id) => {
     props.setPermittedFunc((prevState) => {
       return {
@@ -40,7 +62,17 @@ const ChartsTable = (props) => {
       if (charts.length > 0) {
         return charts.map((chart, i) => {
           return (
-            <tr key={chart.id}>
+            <tr
+              key={chart.id}
+              style={
+                props.permittedFunc[chart.id]
+                  ? {
+                      backgroundColor: "#e3f2fd",
+                      borderBottom: "1.1px #90caf9 solid",
+                    }
+                  : null
+              }
+            >
               <td>{i + 1}</td>
               <td>{chart.chart_name}</td>
               <td>{chart.chart_type}</td>
@@ -52,7 +84,7 @@ const ChartsTable = (props) => {
                 <FormGroup check inline>
                   <Input
                     type="checkbox"
-                    value={charts.id}
+                    value={chart.id}
                     checked={!!props.permittedFunc[chart.id]}
                     onChange={() => handleCheckboxes(chart.id)}
                   />

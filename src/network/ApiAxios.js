@@ -1,4 +1,5 @@
 import axios from "axios";
+import checkIfSessionActive from "commonFunctions/checkIfSessionActive";
 import config from "../config";
 
 // const https = require('https');
@@ -18,111 +19,145 @@ instance.interceptors.request.use(async (config) => {
   return config;
 });
 
-//usersAPI
-//query completed
-export const getAllWithRole = async () => await instance.get("users/all");
+//users API
+export const getAllWithRole = async () => await instance.get("/users");
 
-export const getDbUsersWithRole = async () =>
-  await instance.get("users/dbusers");
+export const getDbUsersWithRole = async () => {
+  const res = await instance.get("users/dbusers");
+  return checkIfSessionActive(res);
+};
 
-export const getDbUsersWithRoleByClient = async (clientId) =>
-  await instance.get(`users/dbusers/${clientId}`);
+export const getDbUsersWithRoleByClient = async (clientId) => {
+  const res = await instance.get(`users/dbusers/${clientId}`);
+  return checkIfSessionActive(res);
+};
 
-export const getAllByRole = async (roleId) =>
-  await instance.get(`users/${roleId}`);
+export const getAllByRole = async (roleId) => {
+  const res = await instance.get(`users/${roleId}`);
+  return checkIfSessionActive(res);
+};
 
-//mutation completed
-export const register = async (userDetails) =>
-  await instance.post("users/register", userDetails);
+export const register = async (userDetails) => {
+  const res = await instance.post("users/register", userDetails);
+  return checkIfSessionActive(res);
+};
 
-export const confirmRegister = async (id) =>
-  await instance.post(`users/confirm/${id}`);
-//mutation completed
-export const forgotPassword = async (email) =>
-  await instance.post("users/forgotpassword", { email });
-//mutation completed
-export const confirmReset = async ({ id, password }) =>
-  await instance.post(`users/resetpass/${id}`, { password });
-//mutation completed
-export const login = async (userCreds) =>
-  await instance.post("users/login", userCreds);
-//mutation completed
-export const logout = async (token) =>
-  await instance.post("users/logout", { token });
-//mutation completed
-export const edit = async (userDetails) =>
-  await instance.post("/users/edit", userDetails);
+export const confirmRegister = async (id) => {
+  const res = await instance.post(`users/confirm/${id}`);
+  return checkIfSessionActive(res);
+};
 
+export const forgotPassword = async (email) => {
+  const res = await instance.post("users/forgotpassword", { email });
+  return checkIfSessionActive(res);
+};
+
+export const confirmReset = async ({ id, password }) => {
+  const res = await instance.post(`users/resetpass/${id}`, { password });
+  return checkIfSessionActive(res);
+};
+export const login = async (userCreds) => {
+  const res = await instance.post("users/login", userCreds);
+  return checkIfSessionActive(res);
+};
+export const logout = async (token) => {
+  const res = await instance.post("users/logout", { token });
+  return checkIfSessionActive(res);
+};
+export const edit = async (userDetails) => {
+  const res = await instance.put("/users", userDetails);
+  return checkIfSessionActive(res);
+};
 export const deleteUser = async (userId) => {
-  return await instance.delete(`/users/delete/${userId}`);
+  const res = await instance.delete(`/users/${userId}`);
+  return checkIfSessionActive(res);
 };
 
 //rolesAPI
 
 export const getRoleById = async (roleId) => {
-  return await instance.get(`/roles/${roleId}`);
+  const res = await instance.get(`/roles/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 export const editRoleById = async ({ roleId, roleName }) => {
-  return await instance.put(`/roles/edit/${roleId}`, { roleName });
+  const res = await instance.put(`/roles/${roleId}`, { roleName });
+  return checkIfSessionActive(res);
 };
 
 export const getAllRoles = async () => {
-  return await instance.get("/roles/all");
+  const res = await instance.get("/roles");
+  return checkIfSessionActive(res);
 };
 
 export const getDbRoles = async () => {
-  return await instance.get("/roles/dbroles");
+  const res = await instance.get("/roles/dbroles");
+  return checkIfSessionActive(res);
 };
 
 export const getDbRolesByClient = async (clientId) => {
-  return await instance.get(`/roles/dbroles/${clientId}`);
+  const res = await instance.get(`/roles/dbroles/${clientId}`);
+  return checkIfSessionActive(res);
 };
 
 export const createNewRole = async ({ roleName, clientId }) => {
-  return await instance.post("/roles/new", { roleName, clientId });
+  const res = await instance.post("/roles", { roleName, clientId });
+  return checkIfSessionActive(res);
 };
 
 export const deleteRole = async (roleId) => {
-  return await instance.delete(`/roles/delete/${roleId}`);
+  const res = await instance.delete(`/roles/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 //teams API
 export const getAllTeams = async () => {
-  return await instance.get("/teams/all");
+  const res = await instance.get("/teams");
+  return checkIfSessionActive(res);
 };
 
 export const getAllTeamsByClient = async (clientId) => {
-  return await instance.get(`/teams/all/${clientId}`);
+  const res = await instance.get(`/teams/teamClient/${clientId}`);
+  return checkIfSessionActive(res);
 };
 
 export const createNewTeam = async ({ teamName, userIds, clientId }) => {
-  return await instance.post("/teams/new", { teamName, userIds, clientId });
-};
-
-export const editTeamById = async ({ teamId, teamName, userIds, clientId }) => {
-  return await instance.put(`/teams/edit/${teamId}`, {
+  const res = await instance.post("/teams", {
     teamName,
     userIds,
     clientId,
   });
+  return checkIfSessionActive(res);
+};
+
+export const editTeamById = async ({ teamId, teamName, userIds, clientId }) => {
+  const res = await instance.put(`/teams/${teamId}`, {
+    teamName,
+    userIds,
+    clientId,
+  });
+  return checkIfSessionActive(res);
 };
 
 export const deleteTeam = async (teamId) => {
-  return await instance.delete(`/teams/delete/${teamId}`);
+  const res = await instance.delete(`/teams/${teamId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getUserTeamById = async (teamId) => {
-  return await instance.get(`/teams/${teamId}`);
+  const res = await instance.get(`/teams/${teamId}`);
+  return checkIfSessionActive(res);
 };
 
 //functionality API
 export const getAllFunctionalities = async () => {
-  return await instance.get(`/functionalities/all`);
+  const res = await instance.get(`/functionalities`);
+  return checkIfSessionActive(res);
 };
 
 export const getAllFuncsFuncgroups = async () => {
-  return await instance.get(`/functionalities/funcsfuncgroups/all`);
+  const res = await instance.get(`/functionalities/funcsfuncgroups`);
+  return checkIfSessionActive(res);
 };
 
 export const createNewFunctionality = async ({
@@ -130,11 +165,12 @@ export const createNewFunctionality = async ({
   funcLabel,
   sectorId,
 }) => {
-  return await instance.post("/functionalities/new", {
+  const res = await instance.post("/functionalities", {
     funcName,
     funcLabel,
     sectorId,
   });
+  return checkIfSessionActive(res);
 };
 
 export const createNewGroupFunctionality = async ({
@@ -142,173 +178,344 @@ export const createNewGroupFunctionality = async ({
   funcNames,
   sectorId,
 }) => {
-  return await instance.post("/functionalities/group/new", {
+  const res = await instance.post("/functionalities/group", {
     groupName,
     funcNames,
     sectorId,
   });
+  return checkIfSessionActive(res);
 };
 
-export const createRoleFunctionalities = async ({ roleId, funcIds }) => {
-  return await instance.post("/functionalities/setfunc", {
+export const setRoleFunctionalities = async ({ roleId, funcIds }) => {
+  const res = await instance.post("/functionalities/setfunc", {
     roleId,
     funcIds,
   });
+  return checkIfSessionActive(res);
 };
 
 export const deleteFunctionality = async (funcId) => {
-  return await instance.delete(`/functionalities/delete/${funcId}`);
+  const res = await instance.delete(`/functionalities/${funcId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getFuncWithSectorId = async () => {
-  return await instance.get(`/functionalities/funcWithSecId`);
+  const res = await instance.get(`/functionalities/funcWithSecId`);
+  return checkIfSessionActive(res);
 };
 
 export const getFuncFuncgroupsWithSectorId = async () => {
-  return await instance.get(`/functionalities/funcFuncgroupsWithSecId`);
+  const res = await instance.get(`/functionalities/funcFuncgroupsWithSecId`);
+  return checkIfSessionActive(res);
 };
 
 export const getFuncWithRoleId = async () => {
-  return await instance.get(`/functionalities/funcWithRoleId`);
+  const res = await instance.get(`/functionalities/funcWithRoleId`);
+  return checkIfSessionActive(res);
 };
 
 export const getFuncByRoleId = async (roleId) => {
-  return await instance.get(`/functionalities/funcByRoleId/${roleId}`);
+  const res = await instance.get(`/functionalities/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getFuncsFuncgroupsByRoleId = async (roleId) => {
-  return await instance.get(`/functionalities/funcsfuncgroups/${roleId}`);
+  const res = await instance.get(`/functionalities/funcsfuncgroups/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getFuncFuncgroupsBySectorId = async (clientId) => {
-  return await instance.get(
+  const res = await instance.get(
     `/functionalities/funcFuncgroupsBySecId/${clientId}`
   );
+  return checkIfSessionActive(res);
 };
 
-//sectors
+export const getFuncsByFuncgroupId = async (funcgroupId) => {
+  const res = await instance.get(
+    `/functionalities/funcsByFuncgroupId/${funcgroupId}`
+  );
+  return checkIfSessionActive(res);
+};
+
+export const editFunctionalitiesWithSectorId = async ({
+  funcName,
+  funcLabel,
+  sectorId,
+  funcId,
+}) => {
+  const res = await instance.put("/functionalities/funcWithSecId", {
+    funcName,
+    funcLabel,
+    sectorId,
+    funcId,
+  });
+  return checkIfSessionActive(res);
+};
+
+export const editFuncFuncgroupsWithSectorId = async ({
+  groupName,
+  funcNames,
+  sectorId,
+  groupId,
+}) => {
+  const res = await instance.put("/functionalities/funcFuncgroupsWithSecId", {
+    groupName,
+    funcNames,
+    sectorId,
+    groupId,
+  });
+  return checkIfSessionActive(res);
+};
+
+//sectors API
 export const getAllSectors = async () => {
-  return await instance.get("/sectors/all");
+  const res = await instance.get("/sectors");
+  return checkIfSessionActive(res);
 };
 
 export const editSectorById = async ({ sectorId, sectorName, sectorCode }) => {
-  return await instance.put(`/sectors/edit/${sectorId}`, {
+  const res = await instance.put(`/sectors/${sectorId}`, {
     sectorName,
     sectorCode,
   });
+  return checkIfSessionActive(res);
 };
 
 export const createNewSector = async ({ sectorName, sectorCode }) => {
-  return await instance.post("/sectors/new", { sectorName, sectorCode });
+  const res = await instance.post("/sectors", { sectorName, sectorCode });
+  return checkIfSessionActive(res);
 };
 
 export const deleteSector = async (sectorId) => {
-  return await instance.delete(`/sectors/delete/${sectorId}`);
+  const res = await instance.delete(`/sectors/${sectorId}`);
+  return checkIfSessionActive(res);
 };
 
-//clients
+//clients API
 export const getAllClients = async () => {
-  return await instance.get("/clients/all");
+  const res = await instance.get("/clients");
+  return checkIfSessionActive(res);
 };
 
 export const editClientById = async ({ clientId, clientName, sectorId }) => {
-  return await instance.put(`/clients/edit/${clientId}`, {
+  const res = await instance.put(`/clients/${clientId}`, {
     clientName,
     sectorId,
   });
+  return checkIfSessionActive(res);
 };
 
 export const getBanner = async (clientId) => {
-  return await instance.get(`/clients/banner/${clientId}`);
+  const res = await instance.get(`/clients/banner/${clientId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getAllClientsWithSector = async () => {
-  return await instance.get("/clients/cliWithSec");
+  const res = await instance.get("/clients/cliWithSec");
+  return checkIfSessionActive(res);
 };
 
 export const createNewClient = async ({ clientName, sectorId }) => {
-  return await instance.post("/clients/new", { clientName, sectorId });
+  const res = await instance.post("/clients/newCliAssSec", {
+    clientName,
+    sectorId,
+  });
+  return checkIfSessionActive(res);
 };
 
 export const updateBanner = async ({ clientId, banner }) => {
-  return await instance.put(`/clients/update/banner/${clientId}`, banner);
+  const res = await instance.put(`/clients/banner/${clientId}`, banner);
+  return checkIfSessionActive(res);
 };
 
 export const deleteClient = async (clientId) => {
-  return await instance.delete(`/clients/delete/${clientId}`);
+  const res = await instance.delete(`/clients/${clientId}`);
+  return checkIfSessionActive(res);
 };
 
 //webmap API
 export const createNewWebmap = async (webmapDetails) => {
-  return await instance.post("/webmaps/new", webmapDetails);
+  const res = await instance.post("/webmaps", webmapDetails);
+  return checkIfSessionActive(res);
 };
 
 export const getActiveWebmap = async (roleId) => {
-  return await instance.get(`/webmaps/active/${roleId}`);
+  const res = await instance.get(`/webmaps/active/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 //portal API
 export const createNewPortal = async (portalDetails) => {
-  return await instance.post("/portal/new", portalDetails);
+  const res = await instance.post("/portal", portalDetails);
+  return checkIfSessionActive(res);
 };
 
 export const getActivePortal = async (roleId) => {
-  return await instance.get(`/portal/active/${roleId}`);
+  const res = await instance.get(`/portal/active/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 //test API
 export const getExtData = async (webUrl) => {
-  return await instance.get(webUrl);
+  const res = await instance.get(webUrl);
+  return checkIfSessionActive(res);
 };
 
 //charts API
 export const createChart = async (chartDetails) => {
-  return await instance.post("/charts/new", chartDetails);
+  const res = await instance.post("/charts", chartDetails);
+  return checkIfSessionActive(res);
 };
 
 export const getChartsByRole = async (roleId) => {
-  return await instance.get(`/charts/chartsByRole/${roleId}`);
+  const res = await instance.get(`/charts/${roleId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getAllCharts = async () => {
-  return await instance.get("/charts/all");
+  const res = await instance.get("/charts");
+  return checkIfSessionActive(res);
 };
 
-export const createRoleCharts = async ({ roleId, chartIds }) => {
-  return await instance.post("/charts/chartRole", { roleId, chartIds });
+export const setRoleCharts = async ({ roleId, chartIds }) => {
+  const res = await instance.post("/charts/chartRole", { roleId, chartIds });
+  return checkIfSessionActive(res);
 };
 
 //files API
 export const fileUpload = async (files) => {
-  return await instance.post("/files/new", files);
+  const res = await instance.post("/files", files);
+  return checkIfSessionActive(res);
 };
 
 export const getFilesByParent = async (parentId) => {
-  return await instance.get(`/files/filesByParent/${parentId}`);
+  const res = await instance.get(`/files/filesByParent/${parentId}`);
+  return checkIfSessionActive(res);
+};
+
+export const dbUsersFileUpload = async ({ roleId, files }) => {
+  const res = await instance.post(`/files/dbUsers/${roleId}`, files);
+  return checkIfSessionActive(res);
 };
 
 //avatar API
 export const updateDp = async ({ formData, userId }) => {
-  return await instance.post(`/avatars/new/${userId}`, formData);
+  const res = await instance.post(`/avatars/${userId}`, formData);
+  return checkIfSessionActive(res);
 };
 
 export const getActiveAvatar = async (userId) => {
-  return await instance.get(`/avatars/active/${userId}`);
+  const res = await instance.get(`/avatars/active/${userId}`);
+  return checkIfSessionActive(res);
 };
 
 //folders API
 export const getRootFolderByClient = async (clientId) => {
-  return await instance.get(`/folders/root/${clientId}`);
+  const res = await instance.get(`/folders/root/${clientId}`);
+  return checkIfSessionActive(res);
 };
 
 export const getFoldersByParent = async (folderId) => {
-  return await instance.get(`/folders/foldbyParent/${folderId}`);
+  const res = await instance.get(`/folders/foldbyParent/${folderId}`);
+  return checkIfSessionActive(res);
 };
 
 export const createNewFolder = async ({ folderPath, parentId }) => {
-  return await instance.post("/folders/new", { folderPath, parentId });
+  const res = await instance.post("/folders", { folderPath, parentId });
+  return checkIfSessionActive(res);
 };
 
 export const createRootFolder = async (clientId) => {
-  return await instance.post("/folders/newRoot", { clientId });
+  const res = await instance.post("/folders/root", { clientId });
+  return checkIfSessionActive(res);
+};
+
+//expbuild_config API
+export const getConfigByClient = async (clientId) => {
+  const res = await instance.get(`/expbuild/configByClient/${clientId}`);
+  return checkIfSessionActive(res);
+};
+
+export const createNewConfig = async ({ username, clientId }) => {
+  const res = await instance.post("/expbuild", { username, clientId });
+  return checkIfSessionActive(res);
+};
+
+export const getExperiencesByClient = async (clientId) => {
+  const res = await instance.get(`/expbuild/expByClient/${clientId}`);
+  return checkIfSessionActive(res);
+};
+
+export const setRoleExp = async ({ roleId, expId }) => {
+  const res = await instance.post("/expbuild/roleExp", { roleId, expId });
+  return checkIfSessionActive(res);
+};
+
+export const getExpByRole = async (roleId) => {
+  const res = await instance.get(`/expbuild/roleExp/${roleId}`);
+  return checkIfSessionActive(res);
+};
+
+//dataTableApproval API
+export const getAllTables = async (dbName) => {
+  const res = await instance.get(`/dataApproval/tables/${dbName}`);
+  return checkIfSessionActive(res);
+};
+
+export const getAllCols = async (dbName, tableName) => {
+  const res = await instance.get(
+    `/dataApproval/columns/${dbName}/${tableName}`
+  );
+  return checkIfSessionActive(res);
+};
+
+export const createNewApproval = async ({ roleId, tables }) => {
+  const res = await instance.post("/dataApproval", { roleId, tables });
+  return checkIfSessionActive(res);
+};
+
+export const getApprovalByRoleId = async (roleId) => {
+  const res = await instance.get(`/dataApproval/${roleId}`);
+  return checkIfSessionActive(res);
+};
+
+export const deleteApprovalByRoleId = async (roleId) => {
+  const res = await instance.delete(`/dataApproval/${roleId}`);
+  return checkIfSessionActive(res);
+};
+
+export const InsertOrUpdateApproval = async ({ roleId, dbs }) => {
+  const res = await instance.put("/dataApproval", { roleId, dbs });
+  return checkIfSessionActive(res);
+};
+
+export const checkIfDataEntryRole = async (roleId) => {
+  const res = await instance.get(`/dataApproval/exists/${roleId}`);
+  return checkIfSessionActive(res);
+};
+
+export const getAlldbs = async () => {
+  const res = await instance.get("/dataApproval/databases");
+  return checkIfSessionActive(res);
+};
+
+// DataEntry API
+export const selectQuery = async (roleId, dbName, tableName) => {
+  const res = await instance.get(`/dataEntry/${roleId}/${dbName}/${tableName}`);
+  return checkIfSessionActive(res);
+};
+
+//Layers API
+export const InsertOrUpdateLayers = async ({ portalItems, roleId }) => {
+  const res = await instance.put("/layers", {
+    portalItems,
+    roleId,
+  });
+  return checkIfSessionActive(res);
+};
+
+export const getLayersByRoleId = async (roleId) => {
+  const res = await instance.get(`/layers/${roleId}`);
+  return checkIfSessionActive(res);
 };

@@ -1,26 +1,29 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import ListGroup from "reactstrap/lib/ListGroup";
 import ListGroupItem from "reactstrap/lib/ListGroupItem";
 import { getFuncsFuncgroupsByRoleId } from "network/ApiAxios";
 import MyAccordian from "components/commonComps/MyAccordian";
 import { funcContext } from "GlobalState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-  faPuzzlePiece,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faGlasses } from "@fortawesome/free-solid-svg-icons";
 import Card from "reactstrap/lib/Card";
 import Row from "reactstrap/lib/Row";
 import Col from "reactstrap/lib/Col";
-import AlertModal from "./AlertModal";
+import AlertModal from "./modals/AlertModal";
+import UploadModal from "components/commonComps/UploadModal";
+import { dbUsersFileUpload } from "network/ApiAxios";
+import DataExportModal from "components/commonComps/DataExportModal";
 
 const FunctionalityBar = () => {
   const [groups, setGroups] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showDataExportModal, setShowDataExportModal] = useState(false);
   const [title, setTitle] = useState("");
   const roleId = localStorage.getItem("role_id");
   const [state, dispatch] = useContext(funcContext);
+  const mutation = useMutation(dbUsersFileUpload);
   const { data, isSuccess } = useQuery(
     ["funcsfuncgroupsByRole", roleId],
     () => getFuncsFuncgroupsByRoleId(roleId),
@@ -28,6 +31,7 @@ const FunctionalityBar = () => {
       select: (funcsfuncgroupsByRole) => funcsfuncgroupsByRole.data,
     }
   );
+  
   useEffect(() => {
     if (data) {
       let newGroup = {};
@@ -54,7 +58,29 @@ const FunctionalityBar = () => {
       setGroups(newGroup);
     }
   }, [data]);
+
   const renderList = () => {
+    const onUngroupedFuncClick = (func) => {
+      if (func.funcName === "upload") {
+        setShowUploadModal(true);
+      } else if (func.funcName === "fieldValidation") {
+        dispatch({ type: "toggleFuncs", payload: func.funcName });
+      } else if (func.funcName === "dataExport") {
+        setShowDataExportModal(true);
+      } else if (func.funcName === "primaryValidation") {
+        dispatch({ type: "toggleFuncs", payload: func.funcName });
+      } else {
+        setTitle(func.funcName);
+        setShowModal(true);
+      }
+    };
+
+    const onGroupedFuncClick = (func) => {
+      debugger;
+      setTitle(func.funcName);
+      setShowModal(true);
+    };
+
     let listItems = [];
     for (const key in groups) {
       if (key === "ungrouped") {
@@ -63,16 +89,13 @@ const FunctionalityBar = () => {
             return (
               <ListGroupItem
                 key={func.funcId}
-                onClick={() => {
-                  setTitle(func.funcName);
-                  setShowModal(true);
-                }}
+                onClick={() => onUngroupedFuncClick(func)}
                 style={
                   state[func.funcName]
                     ? {
-                        backgroundColor: "#b2dfdb",
-                        border: "solid 1px #80cbc4",
-                      }
+                      backgroundColor: "#b2dfdb",
+                      border: "solid 1px #80cbc4",
+                    }
                     : {}
                 }
               >
@@ -95,20 +118,13 @@ const FunctionalityBar = () => {
             return (
               <ListGroupItem
                 key={func.funcId}
-                onClick={() => {
-                  setTitle(func.funcName);
-                  if (func.funcName === "layerList") {
-                    dispatch({ type: "toggleFuncs", payload: func.funcName });
-                  } else {
-                    setShowModal(true);
-                  }
-                }}
+                onClick={() => onGroupedFuncClick(func)}
                 style={
                   state[func.funcName]
                     ? {
-                        backgroundColor: "#b2dfdb",
-                        border: "solid 1px #80cbc4",
-                      }
+                      backgroundColor: "#b2dfdb",
+                      border: "solid 1px #80cbc4",
+                    }
                     : {}
                 }
               >
@@ -132,30 +148,51 @@ const FunctionalityBar = () => {
     }
     return listItems;
   };
+
+  const uploadFunctionality = (files, setFiles, setError) => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+    mutation.mutate(
+      { roleId, files: formData },
+      {
+        onSuccess: (response) => {
+          const { data } = response;
+          if (!data.success) {
+            setError(data.msg);
+            return;
+          }
+          setShowUploadModal(false);
+          setFiles([]);
+        },
+      }
+    );
+  };
+
   return (
     <Card className="mt--2 pt-3">
       <Row className="text-center">
-        <Col
-          sm="3"
-          xs="2"
-          style={{ fontSize: "28px", paddingLeft: "30px" }}
-          className="text-muted"
-        >
-          <FontAwesomeIcon icon={faPuzzlePiece} />
+        <Col sm="3" xs="2" style={{ fontSize: "28px", paddingLeft: "30px" }} className="text-muted">
+          <FontAwesomeIcon icon={faGlasses} />
         </Col>
-        <Col
-          sm="9"
-          xs="10"
-          className="h3 text-muted pl-4"
-          style={{ textAlign: "start" }}
-        >
+        <Col sm="9" xs="10" className="h3 text-muted pl-4" style={{ textAlign: "start" }} >
           Widgets
         </Col>
       </Row>
       <ListGroup className="mt-3">
         {isSuccess && data.success && renderList()}
       </ListGroup>
-      <AlertModal setTitle={title} show={showModal} setShow={setShowModal} />
+      <AlertModal setTitle={title} show={showModal} setShow={setShowModal} />/
+      <UploadModal
+        uploadFunctionality={uploadFunctionality}
+        show={showUploadModal}
+        setShow={setShowUploadModal}
+      />
+      <DataExportModal
+        show={showDataExportModal}
+        setShow={setShowDataExportModal}
+      />
     </Card>
   );
 };

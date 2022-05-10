@@ -18,7 +18,7 @@ const DashboardScene = (props) => {
   useEffect(() => {
     const scene = new WebScene({
       portalItem: {
-        id: props.data?.portalid,
+        id: props.piId,
       },
     });
 
@@ -27,7 +27,7 @@ const DashboardScene = (props) => {
       container: mapDiv.current,
     });
     setView(tempView);
-  }, [props.data]);
+  }, [props.piId]);
 
   useEffect(() => {
     view?.when(() => {

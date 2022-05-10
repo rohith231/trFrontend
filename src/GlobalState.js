@@ -5,9 +5,7 @@ const initialState = {};
 const initChartState = {};
 
 const GlobalState = ({ children }) => {
-  //state for toggling widgets
   const [state, dispatch] = useReducer(funcReducer, initialState);
-  //state for toggling charts
   const [chartState, chartDispatch] = useReducer(funcReducer, initChartState);
 
   return (

@@ -1,7 +1,7 @@
 import imageForRole from "commonFunctions/imageForRole";
 import React from "react";
 import { useMutation } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,
@@ -21,6 +21,7 @@ const AdminNavbar = (props) => {
   let username = JSON.parse(localStorage.getItem("user")).first_name;
   const avatar = localStorage.getItem("avatar");
   const mutation = useMutation(logout);
+  const history = useHistory();
   const logOut = async () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -34,7 +35,7 @@ const AdminNavbar = (props) => {
             localStorage.removeItem("avatar");
             localStorage.removeItem("client_id");
             // esriId.destroyCredentials();
-            props.history.push("/auth/login");
+            history.push("/auth/login");
           }
         },
       });
@@ -43,20 +44,26 @@ const AdminNavbar = (props) => {
 
   return (
     <>
-      <Navbar className="navbar-top navbar-dark" id="navbar-main">
+      <Navbar
+        className="navbar-top navbar-dark bg-gradient-info"
+        id="navbar-main"
+      >
         <Container fluid>
-          <div
-            className="navbar-brand"
-            id="sidebar-toggle"
-            onClick={() => {
-              props.setToggle((prevState) => !prevState);
-            }}
-          >
-            <FontAwesomeIcon
-              icon={props.toggle ? faBars : faAlignRight}
-              style={{ cursor: "pointer" }}
-            />
-          </div>
+          {props.setToggle ? (
+            <div
+              className="navbar-brand"
+              id="sidebar-toggle"
+              onClick={() => {
+                props.setToggle((prevState) => !prevState);
+              }}
+            >
+              <FontAwesomeIcon
+                icon={props.toggle ? faBars : faAlignRight}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+          ) : null}
+
           <Link
             className="h4 mb-0 text-white text-uppercase d-lg-inline-block"
             to="/"
@@ -68,10 +75,7 @@ const AdminNavbar = (props) => {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="profile image"
-                      src={avatar ? avatar : imageForRole()}
-                    />
+                    <img alt="profile" src={avatar ? avatar : imageForRole()} />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
@@ -84,7 +88,10 @@ const AdminNavbar = (props) => {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem
+                  to="/admin/profile-management/user-profile"
+                  tag={Link}
+                >
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>

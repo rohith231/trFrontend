@@ -121,6 +121,8 @@ const Charts = () => {
                   </Card>
                 </Col>
               );
+            } else {
+              return null;
             }
           });
         }

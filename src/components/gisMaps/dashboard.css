@@ -31,6 +31,7 @@ h6 {
   flex-direction: column;
   position: relative;
   background: #fff;
+
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 0 16px 0 rgba(0, 0, 0, 0.05);
   margin-bottom: 1.55rem;
 }
@@ -97,4 +98,24 @@ figure {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   word-wrap: break-word;
+}
+
+#addDiv {
+  padding: 10px;
+  border: 1px solid #4fc3f7;
+  background-color: #f5f9facc;
+}
+
+#showLayers {
+  margin-top: 10px;
+}
+
+#layerList {
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.layerListOps {
+  padding-top: 2px;
+  background-color: #f5fbfd;
 }

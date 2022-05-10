@@ -13,6 +13,10 @@ import {
   InputGroup,
   Row,
   Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 import Toast from "react-bootstrap/Toast";
 import { register } from "../../network/ApiAxios";
@@ -30,6 +34,8 @@ const Register = (props) => {
   const [checkbox, setCheckbox] = useState(false);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [prefix, setPrefix] = useState("Select title");
   const [toastMessage, setToastMessage] = useState(
     "Email sent! Check it to reset your password."
   );
@@ -48,6 +54,11 @@ const Register = (props) => {
       return;
     }
 
+    if (prefix === "Select title") {
+      setError("Select title for user");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -58,6 +69,7 @@ const Register = (props) => {
     }
     mutation.mutate(
       {
+        prefix,
         fName,
         mName,
         lName,
@@ -81,6 +93,7 @@ const Register = (props) => {
             setUserID(data.userID);
           }
           setError("");
+          setPrefix("Select title");
           setFName("");
           setMName("");
           setLName("");
@@ -93,6 +106,13 @@ const Register = (props) => {
         },
       }
     );
+  };
+  const toggle = () => {
+    setDropdownOpen((prevState) => !prevState);
+  };
+
+  const onPrefixClick = (value) => {
+    setPrefix(value);
   };
 
   return (
@@ -147,6 +167,34 @@ const Register = (props) => {
           </div>
           <hr />
           <Form role="form">
+            <FormGroup>
+              <Row>
+                <Dropdown
+                  isOpen={dropdownOpen}
+                  toggle={toggle}
+                  style={{ marginLeft: "15px" }}
+                >
+                  <DropdownToggle caret>{prefix}</DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem onClick={() => onPrefixClick("Mr")}>
+                      Mr
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onPrefixClick("Mrs")}>
+                      Mrs
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onPrefixClick("Miss")}>
+                      Miss
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onPrefixClick("Ms")}>
+                      Ms
+                    </DropdownItem>
+                    <DropdownItem onClick={() => onPrefixClick("Dr")}>
+                      Dr
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </Row>
+            </FormGroup>
             <FormGroup>
               <Row>
                 <div className="col-lg-4 col-sm-12">

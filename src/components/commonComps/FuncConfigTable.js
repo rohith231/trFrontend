@@ -5,6 +5,7 @@ import Input from "reactstrap/lib/Input";
 import Label from "reactstrap/lib/Label";
 import CardHeader from "reactstrap/lib/CardHeader";
 import { getFuncFuncgroupsBySectorId } from "network/ApiAxios";
+import { getFuncsFuncgroupsByRoleId } from "network/ApiAxios";
 
 const FuncConfigTable = (props) => {
   const [functionalities, setFunctionalities] = useState([]);
@@ -15,17 +16,39 @@ const FuncConfigTable = (props) => {
       if (res.data) {
         if (res.data.success) {
           setFunctionalities(res.data.funcBySectorId);
-          const temp = {};
-          res.data.funcBySectorId.forEach((functionality) => {
-            temp[functionality.id] = false;
-          });
-          props.setPermittedFunc(temp);
+          // const temp = {};
+          // res.data.funcBySectorId.forEach((functionality) => {
+          //   temp[functionality.id] = false;
+          // });
+          // props.setPermittedFunc(temp);
         }
       }
     };
     runAsync();
   }, []);
-
+  useEffect(() => {
+    const runAsync = async () => {
+      if (props.roleId) {
+        const res = await getFuncsFuncgroupsByRoleId(props.roleId);
+        if (res.data) {
+          if (res.data.success) {
+            if (res.data.funcsFuncgroups.length > 0) {
+              const temp = {};
+              res.data.funcsFuncgroups.forEach((func) => {
+                temp[func.id] = true;
+              });
+              props.setExistingWidgets(temp);
+              props.setPermittedFunc(temp);
+            }
+          }
+        }
+      }
+    };
+    runAsync();
+    return () => {
+      props.setPermittedFunc({});
+    };
+  }, [props.roleId]);
   const handleCheckboxes = (id) => {
     props.setPermittedFunc((prevState) => {
       return {
@@ -54,7 +77,17 @@ const FuncConfigTable = (props) => {
             {functionalities.length > 0 &&
               functionalities.map((functionality, index) => {
                 return (
-                  <tr key={functionality.id}>
+                  <tr
+                    key={functionality.id}
+                    style={
+                      props.permittedFunc[functionality.id]
+                        ? {
+                            backgroundColor: "#e3f2fd",
+                            borderBottom: "1.1px #90caf9 solid",
+                          }
+                        : null
+                    }
+                  >
                     <td>{index + 1}</td>
                     <td>{functionality.functionality_label}</td>
                     <td>{functionality.group_name}</td>

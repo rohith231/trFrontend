@@ -10,10 +10,10 @@ gulp.task("licenses", async function() {
       /**
 
       =========================================================
-      * Product platform - v1.0.0
+      * TProduct platform - v1.0.0
       =========================================================
       
-      * Copyright 2021 TRC (https://www.trccompanies,com)
+      * Copyright 2021 TRC (https://www.trccompanies.com)
       * Coded by TRC
       
       =========================================================
@@ -36,7 +36,7 @@ gulp.task("licenses", async function() {
       =========================================================
       
       * Copyright 2021 TRC (https://www.trccompanies.com)
-      * Coded by TRC
+      * Coded by Technowell
       
       =========================================================
       
@@ -57,8 +57,8 @@ gulp.task("licenses", async function() {
       * Product platform - v1.0.0
       =========================================================
       
-      * Copyright 2021 TRC (https://www.trccompanies)
-      * Coded by TRC
+      * Copyright 2021 TRC (https://www.trccompanies.com)
+      * Coded by Technowell
       
       =========================================================
       
