@@ -14,6 +14,7 @@ import AlertModal from "./modals/AlertModal";
 import UploadModal from "components/commonComps/UploadModal";
 import { dbUsersFileUpload } from "network/ApiAxios";
 import DataExportModal from "components/commonComps/DataExportModal";
+import { useHistory } from "react-router-dom";
 
 const FunctionalityBar = () => {
   const [groups, setGroups] = useState({});
@@ -31,7 +32,7 @@ const FunctionalityBar = () => {
       select: (funcsfuncgroupsByRole) => funcsfuncgroupsByRole.data,
     }
   );
-  
+  let history = useHistory();
   useEffect(() => {
     if (data) {
       let newGroup = {};
@@ -60,7 +61,9 @@ const FunctionalityBar = () => {
   }, [data]);
 
   const renderList = () => {
+    console.log(" ---------> outer func <---------------")
     const onUngroupedFuncClick = (func) => {
+      console.log(func, " --------------------> func")
       if (func.funcName === "upload") {
         setShowUploadModal(true);
       } else if (func.funcName === "fieldValidation") {
@@ -69,14 +72,16 @@ const FunctionalityBar = () => {
         setShowDataExportModal(true);
       } else if (func.funcName === "primaryValidation") {
         dispatch({ type: "toggleFuncs", payload: func.funcName });
-      } else {
+      } else if (func.funcName === "ml Predictions") {
+        history.push("/admin/ml-prediction");
+      }
+      else {
         setTitle(func.funcName);
         setShowModal(true);
       }
     };
 
     const onGroupedFuncClick = (func) => {
-      debugger;
       setTitle(func.funcName);
       setShowModal(true);
     };
@@ -105,7 +110,7 @@ const FunctionalityBar = () => {
                   </Col>
                   <Col sm="9" xs="10" style={{ textAlign: "start" }}>
                     {" "}
-                    {func.funcLabel}
+                    {func.funcLabel} 
                   </Col>
                 </Row>
               </ListGroupItem>
@@ -183,7 +188,7 @@ const FunctionalityBar = () => {
       <ListGroup className="mt-3">
         {isSuccess && data.success && renderList()}
       </ListGroup>
-      <AlertModal setTitle={title} show={showModal} setShow={setShowModal} />/
+      <AlertModal setTitle={title} show={showModal} setShow={setShowModal} />
       <UploadModal
         uploadFunctionality={uploadFunctionality}
         show={showUploadModal}

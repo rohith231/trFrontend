@@ -9,6 +9,7 @@ const primaryValidation = async (
   defaultPopupTemp,
   featTable
 ) => {
+  debugger
   if (primaryValidation) {
     const foundLayer = webmap.allLayers.find(function (layer) {
       return layer.title === lyrTitle;

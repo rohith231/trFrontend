@@ -65,7 +65,7 @@ const ChartsBar = () => {
                 />
               </Col>
               <Col sm="9" xs="10" style={{ textAlign: "start" }}>
-                {chart.chart_name}
+                {chart.chart_name} 
               </Col>
             </Row>
           </ListGroupItem>

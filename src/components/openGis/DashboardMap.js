@@ -1,5 +1,5 @@
 import "./dashboardMap.css";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import Map from "ol/Map";
 import OSM from "ol/source/OSM";
 //import TileLayer from "ol/layer/Tile";
@@ -53,7 +53,10 @@ import sortTable from '../../utils/sorting'
 import SearchData from '../../utils/Search';
 import { SearchNotEqual, SearchEqual } from '../../utils/EqualAndNotEqual'
 import './Table.css';
-const DashboardMap = () => {
+import { funcContext } from '../../GlobalState'
+
+const DashboardMap = (props) => {
+  console.log(props, " ---------------> props in dashbaord")
   const mapElement = useRef();
   const popupContainer = useRef();
   const llbody = useRef();
@@ -69,6 +72,8 @@ const DashboardMap = () => {
   });
   const [display, setDisplay] = useState("none");
   const [popupContent, setPopupContent] = useState();
+  const [context, setContext] = useContext(funcContext)
+  console.log(context, " ------------- context")
 
   // useEffect(() => {
   //   const runAsync = async () => {
@@ -210,7 +215,7 @@ const DashboardMap = () => {
     }
     layerArr.push(vector);
     // overlays.getLayers().push(vector);
-  
+
 
     i++;
 
@@ -605,8 +610,8 @@ const DashboardMap = () => {
               let lurl = e.target.value;
               onChangeQueryLyrLstSelect(lurl);
             }}
-            /*{(e) => {
-          }}*/
+          /*{(e) => {
+        }}*/
           >
             {layerListQuery()}
             {/* 
@@ -745,7 +750,10 @@ const DashboardMap = () => {
             {/* {(searchTable ? searchTable : Data).map((item, rowIndex) => { */}
             {searchTable && searchTable.map((item, rowIndex) => {
               return (
-                <tr style={{ color: "black" }} key={rowIndex}>
+                <tr style={{ color: "black" }} key={rowIndex} className={
+                  `${(context && context.primaryValidation) ? 'bg-warning' : ''}
+                  `
+                } >
                   {Object && Object.keys(item).map((ele, colIndex) => {
                     return (
                       <td key={colIndex}>

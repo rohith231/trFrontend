@@ -12,7 +12,7 @@ import SectorManagement from "components/sectorManagement/SectorManagement";
 import AutoDeployment from "components/autoDeployment/AutoDeployment";
 import DocVer from "components/documentVerification/DocVer";
 import Register from "views/pages/Register";
-
+import MlPrediction from "./components/mlPrediction"
 //1 && >3 =dashboard-user, 2=admin, 3=super admin
 // "*" indicates access for all dashboard_user roles
 var routes = [
@@ -23,6 +23,14 @@ var routes = [
     component: Dashboard,
     layout: "/admin",
     access: ["*", "2"],
+  },
+  {
+    path: "/ml-prediction",
+    // name: "MlPrediction",
+    // icon: "ni ni-tv-2 ",
+    component: MlPrediction,
+    layout: "/admin",
+    access: ["*", "2", "3"],
   },
   {
     path: "/document-verification",
